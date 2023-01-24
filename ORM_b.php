@@ -22,8 +22,8 @@ class DbConnect
             self::$instance = new DbConnect();
             return self::$instance;
         } else {
-            echo"now cant initiate instance.... ";
-            return self::$instance = false;
+            // echo"now cant initiate instance.... ";
+            // die('now cant initiate instance.... ');
         }
         
     }
@@ -36,20 +36,20 @@ class DbConnect
 
      #FETCH DATA USING GIVEN TABLE AND COLUMN NAME
      public  function fetch_Data($table_name,$column_name){
-        $obj =  DbConnect::getConnection();
-        $sql = "select $column_name from $table_name";
-        $result = $obj->query($sql);
-        $response = $result->fetch_all();
-        echo"<pre>";print_r($response);
+        try{
+            $obj =  DbConnect::getConnection();
+            $sql = "select $column_name from $table_name";
+            $result = $obj->query($sql);
+            $response = $result->fetch_all();
+            echo"<pre>";print_r($response);
+        } catch (Error $e){
+            echo "Cannot initialize";
+        }
     }
 
-    public function __get($property)
+    public function __get($a)
     {
-        if (property_exists($this, $property)) {
-            echo "You are trying to access private property";
-        } else {
-            echo "your are trying to non-exit peropertyy";
-        }
+        echo "you have not a instance($a)";
     }
 
 
@@ -59,9 +59,7 @@ $db = DbConnect::getInstance();
 $db->fetch_Data("anandt","name");
 
 $dbb = DbConnect::getInstance();
+if(!is_null($dbb))
 $dbb->fetch_Data("anandt","name");
-
-
-
-
-?>
+else
+echo "Cannot initialize";
